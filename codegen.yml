@@ -1,0 +1,14 @@
+overwrite: true
+schema: ./src/schema.ts
+require:
+  - ts-node/register/transpile-only
+generates:
+  src/generated-types/graphql.ts:
+    plugins:
+      - typescript
+      - typescript-resolvers
+    config:
+      contextType: '@graphql-modules/core#ModuleContext'
+  ./graphql.schema.json:
+    plugins:
+      - introspection
