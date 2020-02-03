@@ -30,6 +30,12 @@ export type Client = {
   seoMonitorId?: Maybe<Scalars['String']>,
   views: Array<View>,
   primaryViewId: Scalars['String'],
+  visibilityScoreReport?: Maybe<VisibilityScoreReport>,
+};
+
+
+export type ClientVisibilityScoreReportArgs = {
+  dateRange: DateRangeInput
 };
 
 export type ClientInput = {
@@ -109,15 +115,29 @@ export type Query = {
   currentUser?: Maybe<User>,
   users: Array<User>,
   user?: Maybe<User>,
+  googleAnalyticsDepartmentSummary?: Maybe<Summary>,
+  googleAdsDepartmentSummary?: Maybe<Summary>,
   clients: Array<Client>,
   client?: Maybe<Client>,
   analyticsAccounts: Array<AnalyticsAccount>,
   analyticsAccount?: Maybe<AnalyticsAccount>,
+  visibilityScoreSummary: VisibilityScoreReport,
 };
 
 
 export type QueryUserArgs = {
   id: Scalars['ID']
+};
+
+
+export type QueryGoogleAnalyticsDepartmentSummaryArgs = {
+  dateRanges: Array<DateRangeInput>,
+  department: Department
+};
+
+
+export type QueryGoogleAdsDepartmentSummaryArgs = {
+  dateRanges: Array<DateRangeInput>
 };
 
 
@@ -130,11 +150,32 @@ export type QueryAnalyticsAccountArgs = {
   id: Scalars['ID']
 };
 
+
+export type QueryVisibilityScoreSummaryArgs = {
+  dateRange: DateRangeInput
+};
+
 export type Report = {
   dateRanges: Array<DateRange>,
   source: Scalars['String'],
   channel: Scalars['String'],
   data?: Maybe<Array<Maybe<Array<Metric>>>>,
+};
+
+export type Summary = {
+  dateRanges: Array<DateRange>,
+  source: Scalars['String'],
+  channel: Scalars['String'],
+  data?: Maybe<Array<SummaryMetric>>,
+};
+
+export type SummaryMetric = {
+  name: Scalars['String'],
+  displayFormat: DisplayFormat,
+  currentAvgValue: Scalars['String'],
+  previousAvgValue: Scalars['String'],
+  delta: Scalars['String'],
+  invertColours: Scalars['Boolean'],
 };
 
 export type User = {
@@ -175,6 +216,18 @@ export type ViewInput = {
   accountId: Scalars['String'],
   webPropertyId: Scalars['String'],
   websiteUrl?: Maybe<Scalars['String']>,
+};
+
+export type VisibilityScore = {
+  previous: Scalars['String'],
+  current: Scalars['String'],
+  delta: Scalars['String'],
+};
+
+export type VisibilityScoreReport = {
+  dateRanges: Array<DateRange>,
+  desktopData: VisibilityScore,
+  mobileData: VisibilityScore,
 };
 
 export type WebProperty = {
@@ -270,6 +323,7 @@ export type ClientResolvers<Context = ModuleContext, ParentType = Client> = {
   seoMonitorId?: Resolver<Maybe<Scalars['String']>, ParentType, Context>,
   views?: Resolver<ArrayOrIterable<View>, ParentType, Context>,
   primaryViewId?: Resolver<Scalars['String'], ParentType, Context>,
+  visibilityScoreReport?: Resolver<Maybe<VisibilityScoreReport>, ParentType, Context, ClientVisibilityScoreReportArgs>,
 };
 
 export type DateRangeResolvers<Context = ModuleContext, ParentType = DateRange> = {
@@ -299,10 +353,13 @@ export type QueryResolvers<Context = ModuleContext, ParentType = Query> = {
   currentUser?: Resolver<Maybe<User>, ParentType, Context>,
   users?: Resolver<ArrayOrIterable<User>, ParentType, Context>,
   user?: Resolver<Maybe<User>, ParentType, Context, QueryUserArgs>,
+  googleAnalyticsDepartmentSummary?: Resolver<Maybe<Summary>, ParentType, Context, QueryGoogleAnalyticsDepartmentSummaryArgs>,
+  googleAdsDepartmentSummary?: Resolver<Maybe<Summary>, ParentType, Context, QueryGoogleAdsDepartmentSummaryArgs>,
   clients?: Resolver<ArrayOrIterable<Client>, ParentType, Context>,
   client?: Resolver<Maybe<Client>, ParentType, Context, QueryClientArgs>,
   analyticsAccounts?: Resolver<ArrayOrIterable<AnalyticsAccount>, ParentType, Context>,
   analyticsAccount?: Resolver<Maybe<AnalyticsAccount>, ParentType, Context, QueryAnalyticsAccountArgs>,
+  visibilityScoreSummary?: Resolver<VisibilityScoreReport, ParentType, Context, QueryVisibilityScoreSummaryArgs>,
 };
 
 export type ReportResolvers<Context = ModuleContext, ParentType = Report> = {
@@ -310,6 +367,22 @@ export type ReportResolvers<Context = ModuleContext, ParentType = Report> = {
   source?: Resolver<Scalars['String'], ParentType, Context>,
   channel?: Resolver<Scalars['String'], ParentType, Context>,
   data?: Resolver<Maybe<ArrayOrIterable<Maybe<ArrayOrIterable<Metric>>>>, ParentType, Context>,
+};
+
+export type SummaryResolvers<Context = ModuleContext, ParentType = Summary> = {
+  dateRanges?: Resolver<ArrayOrIterable<DateRange>, ParentType, Context>,
+  source?: Resolver<Scalars['String'], ParentType, Context>,
+  channel?: Resolver<Scalars['String'], ParentType, Context>,
+  data?: Resolver<Maybe<ArrayOrIterable<SummaryMetric>>, ParentType, Context>,
+};
+
+export type SummaryMetricResolvers<Context = ModuleContext, ParentType = SummaryMetric> = {
+  name?: Resolver<Scalars['String'], ParentType, Context>,
+  displayFormat?: Resolver<DisplayFormat, ParentType, Context>,
+  currentAvgValue?: Resolver<Scalars['String'], ParentType, Context>,
+  previousAvgValue?: Resolver<Scalars['String'], ParentType, Context>,
+  delta?: Resolver<Scalars['String'], ParentType, Context>,
+  invertColours?: Resolver<Scalars['Boolean'], ParentType, Context>,
 };
 
 export type UserResolvers<Context = ModuleContext, ParentType = User> = {
@@ -333,6 +406,18 @@ export type ViewResolvers<Context = ModuleContext, ParentType = View> = {
   goals?: Resolver<Maybe<ArrayOrIterable<Goal>>, ParentType, Context>,
 };
 
+export type VisibilityScoreResolvers<Context = ModuleContext, ParentType = VisibilityScore> = {
+  previous?: Resolver<Scalars['String'], ParentType, Context>,
+  current?: Resolver<Scalars['String'], ParentType, Context>,
+  delta?: Resolver<Scalars['String'], ParentType, Context>,
+};
+
+export type VisibilityScoreReportResolvers<Context = ModuleContext, ParentType = VisibilityScoreReport> = {
+  dateRanges?: Resolver<ArrayOrIterable<DateRange>, ParentType, Context>,
+  desktopData?: Resolver<VisibilityScore, ParentType, Context>,
+  mobileData?: Resolver<VisibilityScore, ParentType, Context>,
+};
+
 export type WebPropertyResolvers<Context = ModuleContext, ParentType = WebProperty> = {
   id?: Resolver<Scalars['ID'], ParentType, Context>,
   name?: Resolver<Scalars['String'], ParentType, Context>,
@@ -349,8 +434,12 @@ export type IResolvers<Context = ModuleContext> = {
   Mutation?: MutationResolvers<Context>,
   Query?: QueryResolvers<Context>,
   Report?: ReportResolvers<Context>,
+  Summary?: SummaryResolvers<Context>,
+  SummaryMetric?: SummaryMetricResolvers<Context>,
   User?: UserResolvers<Context>,
   View?: ViewResolvers<Context>,
+  VisibilityScore?: VisibilityScoreResolvers<Context>,
+  VisibilityScoreReport?: VisibilityScoreReportResolvers<Context>,
   WebProperty?: WebPropertyResolvers<Context>,
 };
 

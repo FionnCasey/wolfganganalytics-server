@@ -40,6 +40,41 @@ const metricsModule = new GraphQLModule({
     }
 
     """
+    Represents the summary of a metric across all clients
+    """
+    type SummaryMetric {
+      """
+      This metric's name
+      """
+      name: String!
+
+      """
+      This metric's display format
+      """
+      displayFormat: DisplayFormat!
+
+      """
+      The total for the current date range
+      """
+      currentAvgValue: String!
+
+      """
+      The total for the comparison date range
+      """
+      previousAvgValue: String!
+
+      """
+      The average % change across all clients
+      """
+      delta: String!
+
+      """
+      If true, negative values for this metric are an improvement and should be displayed accordingly
+      """
+      invertColours: Boolean!
+    }
+
+    """
     Represents a range of dates
     """
     type DateRange {
@@ -92,6 +127,28 @@ const metricsModule = new GraphQLModule({
       Metric data for this request
       """
       data: [[Metric!]]
+    }
+
+    type Summary {
+      """
+      The date ranges for this report. Max 2
+      """
+      dateRanges: [DateRange!]!
+
+      """
+      The analytics platform these results come from
+      """
+      source: String!
+
+      """
+      Channel name, e.g. Organic, PPC
+      """
+      channel: String!
+
+      """
+      Summary metric data for this request
+      """
+      data: [SummaryMetric!]
     }
   `
 });

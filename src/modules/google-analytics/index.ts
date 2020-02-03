@@ -5,7 +5,7 @@ import { ClientProvider } from '../clients/provider';
 import UserModule from '../users';
 import typeDefs from './typeDefs';
 import { GoogleAnalyticsProvider } from './provider';
-import { View } from './resolvers';
+import { View, Query } from './resolvers';
   
 // Module for managing Google Analytics Reporting API requests
 const googleAnalyticsModule = new GraphQLModule({
@@ -15,6 +15,7 @@ const googleAnalyticsModule = new GraphQLModule({
     UserModule
   ],
   resolvers: {
+    Query,
     View
   },
   providers: [

@@ -2,9 +2,12 @@ import { Injectable, ProviderScope } from '@graphql-modules/di';
 import DataLoader from 'dataloader';
 import { omit } from 'lodash';
 
+import ClientModel from './model';
 import { Client, MutationCreateClientArgs } from '../../generated-types/graphql';
 
-import ClientModel from './model';
+interface RequirementArgs {
+  seoMonitorId?: string | { $nin: [null, undefined, ''] }
+}
 
 const batchFunction = async (keys: any) => {
   return await ClientModel.find({ _id: { $in: keys } })
@@ -12,15 +15,14 @@ const batchFunction = async (keys: any) => {
     .populate({ path: 'team', model: 'User' });
 };
 
-
 @Injectable({
   scope: ProviderScope.Session
 })
 export class ClientProvider {
   private dataLoader = new DataLoader(batchFunction);
 
-  async getClients() {
-    const clients = await ClientModel.find({})
+  async getClients(reqs?: RequirementArgs): Promise<Client[]> {
+    const clients = await ClientModel.find(reqs || {})
       .populate({ path: 'leads', model: 'User' })
       .populate({ path: 'team', model: 'User' });
 

@@ -31,6 +31,15 @@ const typeDefs = gql`
     webPropertyId: String!
     websiteUrl: String
   }
+
+  type Query {
+    googleAnalyticsDepartmentSummary(
+      dateRanges: [DateRangeInput!]!
+      department: Department!
+    ): Summary
+    
+    googleAdsDepartmentSummary(dateRanges: [DateRangeInput!]!): Summary
+  }
 `;
 
 export default typeDefs;

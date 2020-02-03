@@ -140,3 +140,4 @@ Blog
 About
 
 *.schema.json
+*.credentials.json
