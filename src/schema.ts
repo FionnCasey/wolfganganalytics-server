@@ -6,6 +6,7 @@ import ClientModule from './modules/clients';
 import AnalyticsAccountModule from './modules/analytics-accounts';
 import GoogleAnalyticsModule from './modules/google-analytics';
 import SEOMonitorModule from './modules/seo-monitor';
+import BigQueryModule from './modules/big-query';
 
 // Root module to import all other GraphQL modules and export schema
 const appModule = new GraphQLModule({
@@ -14,7 +15,8 @@ const appModule = new GraphQLModule({
     ClientModule,
     AnalyticsAccountModule,
     GoogleAnalyticsModule,
-    SEOMonitorModule
+    SEOMonitorModule,
+    BigQueryModule
   ]
 });
 

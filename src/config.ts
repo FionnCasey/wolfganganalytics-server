@@ -21,6 +21,18 @@ export const googleAnalyticsScopes = [
   'https://www.googleapis.com/auth/analytics.readonly'
 ];
 
+export const bigQueryConfig = {
+  credentials: {
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL as string,
+    private_key: decodeURIComponent(process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY as string)
+  },
+  projectId: 'project-id-4791371014168354215',
+  scopes: [
+    'https://www.googleapis.com/auth/bigquery',
+    'https://www.googleapis.com/auth/bigquery.insertdata'
+  ]
+};
+
 export const passportUserConfig = {
   ...googleCredentials,
   callbackURL: `${HOST}/auth/user/redirect`,

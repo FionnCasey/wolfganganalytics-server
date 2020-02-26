@@ -24,7 +24,8 @@ const schema = new Schema({
     websiteUrl: String,
     clientId: { type: String, required: true }
   }],
-  primaryViewId: { type: String, required: true }
+  primaryViewId: { type: String, required: true },
+  pagespeedUrls: { type: [String], default: [] }
 });
 
 export default model<ClientDocument>('Client', schema);

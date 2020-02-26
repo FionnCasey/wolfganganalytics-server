@@ -10,7 +10,6 @@ interface SEOMonitorArgs {
   apiKey?: string
 }
 
-
 @Injectable({
   scope: ProviderScope.Session
 })

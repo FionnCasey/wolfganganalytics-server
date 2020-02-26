@@ -31,6 +31,7 @@ export type Client = {
   views: Array<View>,
   primaryViewId: Scalars['String'],
   visibilityScoreReport?: Maybe<VisibilityScoreReport>,
+  pagespeed?: Maybe<Array<PageSpeedReport>>,
 };
 
 
@@ -100,6 +101,19 @@ export type Mutation = {
 
 export type MutationCreateClientArgs = {
   input: ClientInput
+};
+
+export type PageSpeedReport = {
+  id: Scalars['ID'],
+  date: Scalars['String'],
+  url: Scalars['String'],
+  device: Scalars['String'],
+  firstContentfulPaint: Scalars['Float'],
+  speedIndex: Scalars['Float'],
+  timeToInteractive: Scalars['Float'],
+  firstMeaningfulPaint: Scalars['Float'],
+  firstCpuIdle: Scalars['Float'],
+  estimatedInputLatency: Scalars['Float'],
 };
 
 export enum Permission {
@@ -324,6 +338,7 @@ export type ClientResolvers<Context = ModuleContext, ParentType = Client> = {
   views?: Resolver<ArrayOrIterable<View>, ParentType, Context>,
   primaryViewId?: Resolver<Scalars['String'], ParentType, Context>,
   visibilityScoreReport?: Resolver<Maybe<VisibilityScoreReport>, ParentType, Context, ClientVisibilityScoreReportArgs>,
+  pagespeed?: Resolver<Maybe<ArrayOrIterable<PageSpeedReport>>, ParentType, Context>,
 };
 
 export type DateRangeResolvers<Context = ModuleContext, ParentType = DateRange> = {
@@ -347,6 +362,19 @@ export type MetricResolvers<Context = ModuleContext, ParentType = Metric> = {
 
 export type MutationResolvers<Context = ModuleContext, ParentType = Mutation> = {
   createClient?: Resolver<Maybe<Client>, ParentType, Context, MutationCreateClientArgs>,
+};
+
+export type PageSpeedReportResolvers<Context = ModuleContext, ParentType = PageSpeedReport> = {
+  id?: Resolver<Scalars['ID'], ParentType, Context>,
+  date?: Resolver<Scalars['String'], ParentType, Context>,
+  url?: Resolver<Scalars['String'], ParentType, Context>,
+  device?: Resolver<Scalars['String'], ParentType, Context>,
+  firstContentfulPaint?: Resolver<Scalars['Float'], ParentType, Context>,
+  speedIndex?: Resolver<Scalars['Float'], ParentType, Context>,
+  timeToInteractive?: Resolver<Scalars['Float'], ParentType, Context>,
+  firstMeaningfulPaint?: Resolver<Scalars['Float'], ParentType, Context>,
+  firstCpuIdle?: Resolver<Scalars['Float'], ParentType, Context>,
+  estimatedInputLatency?: Resolver<Scalars['Float'], ParentType, Context>,
 };
 
 export type QueryResolvers<Context = ModuleContext, ParentType = Query> = {
@@ -432,6 +460,7 @@ export type IResolvers<Context = ModuleContext> = {
   Goal?: GoalResolvers<Context>,
   Metric?: MetricResolvers<Context>,
   Mutation?: MutationResolvers<Context>,
+  PageSpeedReport?: PageSpeedReportResolvers<Context>,
   Query?: QueryResolvers<Context>,
   Report?: ReportResolvers<Context>,
   Summary?: SummaryResolvers<Context>,
